@@ -1,0 +1,11 @@
+{{- $.Scratch.Add "index" slice -}}
+{{- range where .Site.Pages ".Params.unlisted" "!=" true -}}
+{{- $image := .Resources.GetMatch "header" -}}
+{{- if  $image -}}
+	{{- $thumbnail := $image.Fill "450x150" -}}
+	{{- $.Scratch.Add "index" (dict "title" .Title "subtitle" .Params.subtitle "ref" .Permalink "tags" .Params.tags "content" .Plain "image" $thumbnail.Permalink) -}}
+{{- else -}}
+	{{- $.Scratch.Add "index" (dict "title" .Title "subtitle" .Params.subtitle "ref" .Permalink "tags" .Params.tags "content" .Plain "image" "https://brunoamaral.eu/images/fractal_thumb.jpg" ) -}}
+{{- end -}}
+{{- end -}}
+{{- $.Scratch.Get "index" | jsonify -}}
